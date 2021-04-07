@@ -1,4 +1,5 @@
 const express = require('express');
+const mw = require('./middleware/middleware')
 const usersRouter = require('./users/users-router');
 const morgan = require('morgan');
 const helmet = require('helmet');
@@ -10,7 +11,7 @@ server.use(morgan('dev'));
 server.use(helmet());
 
 // global middlewares and the user's router need to be connected here
-
+server.use(mw.logger);
 
 
 

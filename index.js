@@ -5,5 +5,4 @@ const port = 5000;
 
 server.listen(port, ()=>{
     console.log(`Success: Listening on Port ${port}`)
-    console.log(`Url: http://localhost:${port}`)
 })

@@ -12,6 +12,7 @@ server.use(helmet());
 
 // global middlewares and the user's router need to be connected here
 server.use(mw.logger);
+server.use(usersRouter)
 
 
 

@@ -34,8 +34,17 @@ router.post('/', mw.validateUser, (req, res) => {
 
 router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+  const changes = req.body
+  Users.update(req.user.id, changes)
+  .then(updatedPostId =>{
+    return Users.getById(updatedPostId)
+    .then(updatedPost =>{
+      res.status(201).json(updatedPost)
+    })
+  })
+  .catch(err =>{
+    res.status(500).json(err.message)
+  })
 });
 
 router.delete('/:id', mw.validateUserId, (req, res) => {

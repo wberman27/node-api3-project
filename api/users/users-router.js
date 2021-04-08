@@ -77,7 +77,6 @@ router.post('/api/users/:id/posts', mw.validateUserId, mw.validatePost, (req, re
   // RETURN THE NEWLY CREATED USER POST
   Posts.insert(req.body)
   .then(updatedPost =>{
-    console.log(updatedPost)
     res.status(201).json(updatedPost)
   })
   .catch(err =>{

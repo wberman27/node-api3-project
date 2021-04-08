@@ -65,7 +65,8 @@ router.get('/api/users/:id/posts', mw.validateUserId, (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
   Posts.get(req.user.id)
   .then(array =>{
-    res.status(200).json(array)
+    const newArray = array.filter(post => post.user_id === req.user.id)
+    res.status(200).json(newArray)
   })
   .catch(err =>{
     res.status(500).json(err.message)
@@ -74,9 +75,9 @@ router.get('/api/users/:id/posts', mw.validateUserId, (req, res) => {
 
 router.post('/api/users/:id/posts', mw.validateUserId, mw.validatePost, (req, res) => {
   // RETURN THE NEWLY CREATED USER POST
-  const changes = req.body
-  Posts.insert(req.user.id, changes)
+  Posts.insert(req.body)
   .then(updatedPost =>{
+    console.log(updatedPost)
     res.status(201).json(updatedPost)
   })
   .catch(err =>{

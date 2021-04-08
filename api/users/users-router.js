@@ -36,8 +36,8 @@ router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   const changes = req.body
   Users.update(req.user.id, changes)
-  .then(updatedPostId =>{
-    return Users.getById(updatedPostId)
+  .then(() =>{
+    return Users.getById(req.user.id)
     .then(updatedPost =>{
       res.status(201).json(updatedPost)
     })
@@ -49,7 +49,16 @@ router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
 
 router.delete('/:id', mw.validateUserId, (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
-  // this needs a middleware to verify user id
+  Users.remove(req.user.id)
+  .then(() =>{
+    return Users.getById(req.user.id)
+    .then(() =>{
+      res.status(201).json(req.user)
+    })
+  })
+  .catch(err =>{
+    res.status(500).json(err.message)
+  })
 });
 
 router.get('/:id/posts', mw.validateUserId, (req, res) => {

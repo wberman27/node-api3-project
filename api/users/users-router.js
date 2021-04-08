@@ -7,7 +7,7 @@ const mw = require('../middleware/middleware')
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/api/users', (req, res) => {
   Users.get()
   .then(array =>{
     res.status(200).json(array)
@@ -17,11 +17,11 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', mw.validateUserId, (req, res) => {
+router.get('/api/users/:id', mw.validateUserId, (req, res) => {
   res.status(200).json(req.user)
 });
 
-router.post('/', mw.validateUser, (req, res) => {
+router.post('/api/users/', mw.validateUser, (req, res) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   Users.insert(req.body)
   .then(user =>{
@@ -32,7 +32,7 @@ router.post('/', mw.validateUser, (req, res) => {
   })
 });
 
-router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
+router.put('/api/users/:id', mw.validateUserId, mw.validateUser, (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   const changes = req.body
   Users.update(req.user.id, changes)
@@ -47,7 +47,7 @@ router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
   })
 });
 
-router.delete('/:id', mw.validateUserId, (req, res) => {
+router.delete('/api/users/:id', mw.validateUserId, (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   Users.remove(req.user.id)
   .then(() =>{
@@ -61,7 +61,7 @@ router.delete('/:id', mw.validateUserId, (req, res) => {
   })
 });
 
-router.get('/:id/posts', mw.validateUserId, (req, res) => {
+router.get('/api/users/:id/posts', mw.validateUserId, (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
   Posts.get(req.user.id)
   .then(array =>{
@@ -72,7 +72,7 @@ router.get('/:id/posts', mw.validateUserId, (req, res) => {
   })
 });
 
-router.post('/:id/posts', mw.validateUserId, mw.validatePost, (req, res) => {
+router.post('/api/users/:id/posts', mw.validateUserId, mw.validatePost, (req, res) => {
   // RETURN THE NEWLY CREATED USER POST
   const changes = req.body
   Posts.insert(req.user.id, changes)

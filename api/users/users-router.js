@@ -63,13 +63,25 @@ router.delete('/:id', mw.validateUserId, (req, res) => {
 
 router.get('/:id/posts', mw.validateUserId, (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
-  // this needs a middleware to verify user id
+  Posts.get(req.user.id)
+  .then(array =>{
+    res.status(200).json(array)
+  })
+  .catch(err =>{
+    res.status(500).json(err.message)
+  })
 });
 
-router.post('/:id/posts', mw.validateUserId, (req, res) => {
+router.post('/:id/posts', mw.validateUserId, mw.validatePost, (req, res) => {
   // RETURN THE NEWLY CREATED USER POST
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+  const changes = req.body
+  Posts.insert(req.user.id, changes)
+  .then(updatedPost =>{
+    res.status(201).json(updatedPost)
+  })
+  .catch(err =>{
+    res.status(500).json(err.message)
+  })
 });
 
 // do not forget to export the router
